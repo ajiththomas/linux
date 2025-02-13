@@ -1,0 +1,3 @@
+//Check connectivity
+nc -vn 127.0.0.1 9512
+echo "test" | nc -w 2 -u 127.0.0.1 9512
